@@ -1,0 +1,22 @@
+.task {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 500px;
+    height: 30px;
+    border-bottom: 1px solid #282c34;
+}
+
+.delete {
+    margin-left: auto;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.completed {
+    opacity: .5;
+}
+
+.completed .task__text {
+    text-decoration: line-through;
+}
