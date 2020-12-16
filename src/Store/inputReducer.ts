@@ -3,6 +3,7 @@ const ADD_SYMBOL = 'inputReducer/ADD_SYMBOL'
 const ADD_TASK = 'inputReducer/ADD_TASK'
 const DELETE_TASK = 'inputReducer/DELETE_TASK'
 const CHANGE_TASK_STATUS = 'inputReducer/CHANGE_TASK_STATUS'
+const CHANGE_TASK = 'inputReducer/CHANGE_TASK'
 
 type addSymbolType = {
     type: typeof ADD_SYMBOL
@@ -23,7 +24,13 @@ type changeTaskStatusType = {
     id: number
 }
 export const changeTaskStatus = (id: number): changeTaskStatusType => ({type: CHANGE_TASK_STATUS, id})
-type actionsType = addSymbolType | addTaskType | deleteTaskType | changeTaskStatusType
+type changeTaskType = {
+    type: typeof CHANGE_TASK
+    id: number
+    text: string
+}
+export const changeTask = (id: number, text: string): changeTaskType => ({type: CHANGE_TASK, id, text})
+type actionsType = addSymbolType | addTaskType | deleteTaskType | changeTaskStatusType | changeTaskType
 //initial state
 export type taskType = {
     id: number
@@ -43,38 +50,49 @@ type InitialState = typeof initialState
 //Create reducer
 export const inputReducer = (state = initialState, action: actionsType): InitialState => {
     const stateCopy = {...state}
-    if (action.type === ADD_SYMBOL) {
-        return {
-            ...state,
-            inputSymbols: action.symbol
-        }
-    } else if (action.type === ADD_TASK) {
-        const newTask = {
-            id: state.task[state.task.length - 1].id + 1,
-            text: state.inputSymbols,
-            completed: false
-        }
-        return {
-            ...state,
-            task: [...state.task, newTask],
-            inputSymbols: ''
-        }
-    } else if (action.type === DELETE_TASK) {
-        debugger
-        return {
-            ...state,
-            task: [...state.task.filter(task => task.id !== action.id)]
-        }
-    } else if (action.type === CHANGE_TASK_STATUS) {
-        return {
-            ...state,
-            task: [...state.task.map(task => {
-                if (task.id === action.id) {
-                    task.completed = !task.completed
-                }
-                return task
-            })]
-        }
+    switch (action.type) {
+        case ADD_SYMBOL:
+            return {
+                ...state,
+                inputSymbols: action.symbol
+            }
+        case ADD_TASK:
+            const newTask = {
+                id: state.task[state.task.length - 1].id + 1,
+                text: state.inputSymbols,
+                completed: false
+            }
+            return {
+                ...state,
+                task: [...state.task, newTask],
+                inputSymbols: ''
+            }
+        case DELETE_TASK:
+            return {
+                ...state,
+                task: [...state.task.filter(task => task.id !== action.id)]
+            }
+        case CHANGE_TASK_STATUS:
+            return {
+                ...state,
+                task: [...state.task.map(task => {
+                    if (task.id === action.id) {
+                        task.completed = !task.completed
+                    }
+                    return task
+                })]
+            }
+        case CHANGE_TASK:
+            return {
+                ...state,
+                task: [...state.task.map(task => {
+                    if (task.id === action.id) {
+                        task.text = action.text
+                    }
+                    return task
+                })]
+            }
+        default:
+            return stateCopy
     }
-    return stateCopy
 }
