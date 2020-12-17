@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {TodoInput} from "../TodoInput/TodoInput";
 import {appStoreType} from "../../Store/store";
 import {useSelector} from 'react-redux'
@@ -15,24 +15,31 @@ export const TodoField = () => {
                                                             taskText={item.text}/>)
     const completedTasks = allTasks.filter((item) => item.props.completed)
     const incompletedTasks = allTasks.filter((item) => !item.props.completed)
-    const [tasks, setTasks] = useState<Array<taskType>>(allTasks)
-    const onCompletedTasks = (): void => {
-        setTasks(completedTasks)
+    const [showAllTasks, setShowAllTasks] = useState<boolean>(true)
+    const [showIncompletedTasks, setShowIncompletedTasks] = useState<boolean>(false)
+    const [showCompletedTasks, setShowCompletedTasks] = useState<boolean>(false)
+    const onCompletedTasks = () => {
+        setShowAllTasks(false)
+        setShowIncompletedTasks(false)
+        setShowCompletedTasks(true)
     }
-    const onIncompletedTasks = (): void => {
-        setTasks(incompletedTasks)
+    const onIncompletedTasks = () => {
+        setShowAllTasks(false)
+        setShowIncompletedTasks(true)
+        setShowCompletedTasks(false)
     }
-    const onAllTasks = (): void => {
-        setTasks(allTasks)
+    const onAllTasks = () => {
+        setShowAllTasks(true)
+        setShowIncompletedTasks(false)
+        setShowCompletedTasks(false)
     }
-    useEffect(() => {
-        setTasks(allTasks)
-    }, [tasksArr])
     const tasksCount = incompletedTasks.length
     return (
         <div className={styles.todoField}>
             <TodoInput/>
-            {tasks}
+            {showAllTasks && allTasks}
+            {showIncompletedTasks && incompletedTasks}
+            {showCompletedTasks && completedTasks}
             <Sorting onAllTasks={onAllTasks} onIncompletedTasks={onIncompletedTasks}
                      onCompletedTasks={onCompletedTasks} tasksCount={tasksCount}/>
         </div>

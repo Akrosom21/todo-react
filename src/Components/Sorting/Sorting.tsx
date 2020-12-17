@@ -1,6 +1,5 @@
 import React, {FC} from "react";
 import styles from './Sorting.module.css'
-import {taskType} from "../../Store/inputReducer";
 
 type propsType = {
     tasksCount: number
