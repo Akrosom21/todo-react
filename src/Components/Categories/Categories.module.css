@@ -1,0 +1,16 @@
+.categories {
+    margin-right: 50px;
+    border-right: 1px solid #282c34;
+    padding-right: 20px;
+}
+
+.categories__item {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.categories__delete {
+    cursor: pointer;
+}

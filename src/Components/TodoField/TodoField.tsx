@@ -7,9 +7,9 @@ import {taskType} from "../../Store/inputReducer";
 import styles from './TodoField.module.css'
 import {Sorting} from "../Sorting/Sorting";
 
-export const TodoField = () => {
+export const TodoField = (props) => {
     //setting tasks array according to requirements (all, completed, incompleted)
-    const tasksArr = useSelector((state: appStoreType) => state.todoInput.task)
+    const tasksArr = useSelector((state: appStoreType) => state.todoInput.categorizedTasks)
     const allTasks = tasksArr.map((item: taskType) => <Task key={item.id} id={item.id}
                                                             completed={item.completed}
                                                             taskText={item.text}/>)

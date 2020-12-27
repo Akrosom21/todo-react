@@ -4,6 +4,8 @@ const ADD_TASK = 'inputReducer/ADD_TASK'
 const DELETE_TASK = 'inputReducer/DELETE_TASK'
 const CHANGE_TASK_STATUS = 'inputReducer/CHANGE_TASK_STATUS'
 const CHANGE_TASK = 'inputReducer/CHANGE_TASK'
+const SWITCH_CATEGORY = 'inputReducer/SWITCH_CATEGORY'
+const SHOW_ALL_CATEGORY = 'inputReducer/SHOW_ALL_CATEGORY'
 
 type addSymbolType = {
     type: typeof ADD_SYMBOL
@@ -30,19 +32,42 @@ type changeTaskType = {
     text: string
 }
 export const changeTask = (id: number, text: string): changeTaskType => ({type: CHANGE_TASK, id, text})
-type actionsType = addSymbolType | addTaskType | deleteTaskType | changeTaskStatusType | changeTaskType
+type switchCategoryType = {
+    type: typeof SWITCH_CATEGORY
+    categoryName: string
+}
+export const switchCategory = (categoryName: string): switchCategoryType => ({type: SWITCH_CATEGORY, categoryName})
+type showAllCategoriesType = {
+    type: typeof SHOW_ALL_CATEGORY
+}
+export const showAllCategories = (): showAllCategoriesType => ({type: SHOW_ALL_CATEGORY})
+type actionsType =
+    addSymbolType
+    | addTaskType
+    | deleteTaskType
+    | changeTaskStatusType
+    | changeTaskType
+    | switchCategoryType
+    | showAllCategoriesType
 //initial state
 export type taskType = {
     id: number
     text: string
     completed: boolean
+    category: string | null
 }
 const initialState = {
     inputSymbols: '',
     task: [
-        {id: 1, text: 'finish app', completed: true},
-        {id: 2, text: 'start next app', completed: false}
-    ] as Array<taskType>
+        {id: 1, text: 'finish app', completed: true, category: 'work'},
+        {id: 2, text: 'start next app', completed: false, category: 'work'},
+        {id: 3, text: 'milk, butter', completed: false, category: 'shopping'}
+    ] as Array<taskType>,
+    categorizedTasks: [
+        {id: 1, text: 'finish app', completed: true, category: 'work'},
+        {id: 2, text: 'start next app', completed: false, category: 'work'},
+        {id: 3, text: 'milk, butter', completed: false, category: 'shopping'}
+    ] as Array<taskType>,
 }
 
 type InitialState = typeof initialState
@@ -60,17 +85,20 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
             const newTask = {
                 id: state.task[state.task.length - 1].id + 1,
                 text: state.inputSymbols,
-                completed: false
+                completed: false,
+                category: null
             }
             return {
                 ...state,
                 task: [...state.task, newTask],
+                categorizedTasks: [...state.task, newTask],
                 inputSymbols: ''
             }
         case DELETE_TASK:
             return {
                 ...state,
-                task: [...state.task.filter(task => task.id !== action.id)]
+                task: [...state.task.filter(task => task.id !== action.id)],
+                categorizedTasks: [...state.task.filter(task => task.id !== action.id)],
             }
         case CHANGE_TASK_STATUS:
             return {
@@ -80,7 +108,8 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
                         task.completed = !task.completed
                     }
                     return task
-                })]
+                })],
+                categorizedTasks: [...state.task],
             }
         case CHANGE_TASK:
             return {
@@ -90,7 +119,18 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
                         task.text = action.text
                     }
                     return task
-                })]
+                })],
+                categorizedTasks: [...state.task],
+            }
+        case SWITCH_CATEGORY:
+            return {
+                ...state,
+                categorizedTasks: [...state.task.filter(task => task.category === action.categoryName)]
+            }
+        case SHOW_ALL_CATEGORY:
+            return {
+                ...state,
+                categorizedTasks: [...state.task]
             }
         default:
             return stateCopy
