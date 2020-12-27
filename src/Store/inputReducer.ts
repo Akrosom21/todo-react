@@ -91,7 +91,7 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
             return {
                 ...state,
                 task: [...state.task, newTask],
-                categorizedTasks: [...state.task, newTask],
+                categorizedTasks: [...state.categorizedTasks, newTask],
                 inputSymbols: ''
             }
         case DELETE_TASK:
