@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from './Categories.module.css'
 import {useSelector, useDispatch} from 'react-redux'
 import {appStoreType} from "../../Store/store";
 import {addCategory, addSymbolCategories, categoriesType, deleteCategory} from "../../Store/categoriesReducer";
 import {showAllCategories, switchCategory} from "../../Store/inputReducer";
+import {NavLink} from 'react-router-dom'
 
 export const Categories = () => {
     const categories: Array<categoriesType> = useSelector((state: appStoreType) => state.todoCategories.categories)
@@ -29,10 +30,13 @@ export const Categories = () => {
     return (
         <div className={styles.categories}>
             <h2>Categories</h2>
-            <div onClick={onShowAllCategories}>All</div>
+            <NavLink exact to='/' activeClassName={styles.categories__item_active}
+                     className={styles.categories__text} onClick={onShowAllCategories}>All</NavLink>
             {categories.map(item =>
                 <div key={item.id} className={styles.categories__item}>
-                    <span onClick={() => onCategorySwitch(item.name)}>{item.name}</span>
+                    <NavLink to={`/${item.name}`} activeClassName={styles.categories__item_active}
+                             className={styles.categories__text}
+                             onClick={() => onCategorySwitch(item.name)}>{item.name}</NavLink>
                     <span onClick={() => onCategoryDelete(item.id)} className={styles.categories__delete}>X</span>
                 </div>)}
             <input onChange={onCategoriesSymbolChange} onKeyPress={onAddCategory}

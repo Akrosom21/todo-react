@@ -14,8 +14,9 @@ type addSymbolType = {
 export const addSymbol = (symbol: string): addSymbolType => ({type: ADD_SYMBOL, symbol})
 type addTaskType = {
     type: typeof ADD_TASK
+    category: string
 }
-export const addTask = (): addTaskType => ({type: ADD_TASK})
+export const addTask = (category: string): addTaskType => ({type: ADD_TASK, category})
 type deleteTaskType = {
     type: typeof DELETE_TASK
     id: number
@@ -86,7 +87,7 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
                 id: state.task[state.task.length - 1].id + 1,
                 text: state.inputSymbols,
                 completed: false,
-                category: null
+                category: action.category
             }
             return {
                 ...state,

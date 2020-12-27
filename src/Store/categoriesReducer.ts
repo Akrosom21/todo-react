@@ -26,9 +26,10 @@ export type categoriesType = {
 const initialState = {
     categoriesSymbols: '',
     categories: [
-        {id: 1, name: 'work'},
-        {id: 2, name: 'shopping'},
-        {id: 3, name: 'entertainment'}
+        {id: 1, name: 'no category'},
+        {id: 2, name: 'work'},
+        {id: 3, name: 'shopping'},
+        {id: 4, name: 'entertainment'}
     ] as Array<categoriesType>
 }
 

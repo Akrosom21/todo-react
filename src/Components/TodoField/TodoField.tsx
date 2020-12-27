@@ -41,7 +41,10 @@ export const TodoField = (props) => {
             {showIncompletedTasks && incompletedTasks}
             {showCompletedTasks && completedTasks}
             <Sorting onAllTasks={onAllTasks} onIncompletedTasks={onIncompletedTasks}
-                     onCompletedTasks={onCompletedTasks} tasksCount={tasksCount}/>
+                     onCompletedTasks={onCompletedTasks} tasksCount={tasksCount}
+                     showAllTasks={showAllTasks} showIncompletedTasks={showIncompletedTasks}
+                     showCompletedTasks={showCompletedTasks}
+            />
         </div>
     )
 }
