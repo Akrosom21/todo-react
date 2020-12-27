@@ -5,8 +5,9 @@ import {appStoreType} from "../../Store/store";
 import {categoriesType} from "../../Store/categoriesReducer";
 
 export const TodoInput = () => {
-    const categoriesArr = useSelector((state: appStoreType) => state.todoCategories.categories)
-    const [chosenCategory, setChosenCategory] = useState<string>('none')
+    const categoriesArr: Array<categoriesType> = useSelector((state: appStoreType) => state.todoCategories.categories)
+    const currentCategory = useSelector((state: appStoreType) => state.todoInput.currentCategory)
+    const [chosenCategory, setChosenCategory] = useState<string>('no category')
     const onChosenCategoryChange = (e) => {
         setChosenCategory(e.target.value)
     }
@@ -17,14 +18,17 @@ export const TodoInput = () => {
     }
     const onAddTask = (e) => {
         if (e.key === 'Enter') {
-            dispatch(addTask(chosenCategory))
+            if (currentCategory){
+                dispatch(addTask(currentCategory))
+            }
+            else dispatch(addTask(chosenCategory))
         }
     }
     return (
         <div className='todoInput__wrapper'>
             <input onChange={onTextInput} onKeyPress={onAddTask} value={symbols}
                    type="text" className="todoInput" placeholder='new task'/>
-            <select value={chosenCategory} onChange={onChosenCategoryChange} disabled={false}>
+            <select value={currentCategory ? currentCategory : chosenCategory} onChange={onChosenCategoryChange} disabled={currentCategory}>
                 {categoriesArr.map((item: categoriesType) => <option key={item.id} value={item.name}>{item.name}</option>)}
             </select>
         </div>

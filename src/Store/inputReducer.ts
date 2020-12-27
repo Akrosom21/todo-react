@@ -69,6 +69,7 @@ const initialState = {
         {id: 2, text: 'start next app', completed: false, category: 'work'},
         {id: 3, text: 'milk, butter', completed: false, category: 'shopping'}
     ] as Array<taskType>,
+    currentCategory: ''
 }
 
 type InitialState = typeof initialState
@@ -99,7 +100,7 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
             return {
                 ...state,
                 task: [...state.task.filter(task => task.id !== action.id)],
-                categorizedTasks: [...state.task.filter(task => task.id !== action.id)],
+                categorizedTasks: [...state.categorizedTasks.filter(task => task.id !== action.id)],
             }
         case CHANGE_TASK_STATUS:
             return {
@@ -110,7 +111,12 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
                     }
                     return task
                 })],
-                categorizedTasks: [...state.task],
+                categorizedTasks: [...state.categorizedTasks.map(task => {
+                    if (task.id === action.id) {
+                        task.completed = !task.completed
+                    }
+                    return task
+                })]
             }
         case CHANGE_TASK:
             return {
@@ -121,12 +127,18 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
                     }
                     return task
                 })],
-                categorizedTasks: [...state.task],
+                categorizedTasks: [...state.categorizedTasks.map(task => {
+                    if (task.id === action.id) {
+                        task.text = action.text
+                    }
+                    return task
+                })]
             }
         case SWITCH_CATEGORY:
             return {
                 ...state,
-                categorizedTasks: [...state.task.filter(task => task.category === action.categoryName)]
+                categorizedTasks: [...state.task.filter(task => task.category === action.categoryName)],
+                currentCategory: action.categoryName
             }
         case SHOW_ALL_CATEGORY:
             return {
