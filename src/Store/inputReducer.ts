@@ -6,6 +6,7 @@ const CHANGE_TASK_STATUS = 'inputReducer/CHANGE_TASK_STATUS'
 const CHANGE_TASK = 'inputReducer/CHANGE_TASK'
 const SWITCH_CATEGORY = 'inputReducer/SWITCH_CATEGORY'
 const SHOW_ALL_CATEGORY = 'inputReducer/SHOW_ALL_CATEGORY'
+const CHANGE_TASK_CATEGORY = 'inputReducer/CHANGE_TASK_CATEGORY'
 
 type addSymbolType = {
     type: typeof ADD_SYMBOL
@@ -42,6 +43,12 @@ type showAllCategoriesType = {
     type: typeof SHOW_ALL_CATEGORY
 }
 export const showAllCategories = (): showAllCategoriesType => ({type: SHOW_ALL_CATEGORY})
+type changeTaskCategoryType = {
+    type: typeof CHANGE_TASK_CATEGORY
+    taskId: number
+    value: string
+}
+export const changeTaskCategory = (taskId, value): changeTaskCategoryType => ({type: CHANGE_TASK_CATEGORY, taskId, value})
 type actionsType =
     addSymbolType
     | addTaskType
@@ -50,12 +57,13 @@ type actionsType =
     | changeTaskType
     | switchCategoryType
     | showAllCategoriesType
+    | changeTaskCategoryType
 //initial state
 export type taskType = {
     id: number
     text: string
     completed: boolean
-    category: string | null
+    category: string
 }
 const initialState = {
     inputSymbols: '',
@@ -144,6 +152,22 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
             return {
                 ...state,
                 categorizedTasks: [...state.task]
+            }
+        case CHANGE_TASK_CATEGORY:
+            return {
+                ...state,
+                task: [...state.task.map(task => {
+                    if (task.id === action.taskId) {
+                        task.category = action.value
+                    }
+                    return task
+                })],
+                categorizedTasks: [...state.categorizedTasks.map(task => {
+                    if (task.id === action.taskId) {
+                        task.category = action.value
+                    }
+                    return task
+                })]
             }
         default:
             return stateCopy

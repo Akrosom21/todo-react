@@ -12,7 +12,9 @@ export const TodoField = (props) => {
     const tasksArr = useSelector((state: appStoreType) => state.todoInput.categorizedTasks)
     const allTasks = tasksArr.map((item: taskType) => <Task key={item.id} id={item.id}
                                                             completed={item.completed}
-                                                            taskText={item.text}/>)
+                                                            taskText={item.text}
+                                                            category={item.category}
+    />)
     const completedTasks = allTasks.filter((item) => item.props.completed)
     const incompletedTasks = allTasks.filter((item) => !item.props.completed)
     const [showAllTasks, setShowAllTasks] = useState<boolean>(true)

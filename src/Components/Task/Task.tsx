@@ -1,12 +1,15 @@
-import React, {FC, useState} from "react"
+import React, {FC, useEffect, useState} from "react"
 import styles from './Task.module.css'
-import {changeTaskStatus, deleteTask, changeTask} from "../../Store/inputReducer";
-import {useDispatch} from 'react-redux'
+import {changeTaskStatus, deleteTask, changeTask, changeTaskCategory} from "../../Store/inputReducer";
+import {useDispatch, useSelector} from 'react-redux'
+import {categoriesType} from "../../Store/categoriesReducer";
+import {appStoreType} from "../../Store/store";
 
 type propsType = {
     taskText: string
     id: number
     completed: boolean
+    category: string
 }
 
 export const Task: FC<propsType> = (props) => {
@@ -35,6 +38,15 @@ export const Task: FC<propsType> = (props) => {
     const onTaskCompleted = (id) => {
         dispatch(changeTaskStatus(id))
     }
+    //create ability to change category
+    const categoriesArr: Array<categoriesType> = useSelector((state: appStoreType) => state.todoCategories.categories)
+    const [secectedCategory, setSelectedCategory] = useState<string>(props.category)
+    const onChangeSelectedCategory = (id, e) => {
+        dispatch(changeTaskCategory(id, e.currentTarget.value))
+    }
+    useEffect(() => {
+        setSelectedCategory(props.category)
+    }, [props.category])
     return (
         <div className={props.completed ? `${styles.task} ${styles.completed}` : styles.task}>
             <div className="task__check">
@@ -43,8 +55,13 @@ export const Task: FC<propsType> = (props) => {
             </div>
             {editMode
                 ?
-                <input onKeyPress={(e) => onChangeTask(props.id, e)} onChange={onEditedChange}
-                       value={editedText} autoFocus={true} type="text" className="task__edit"/>
+                <div className='task__edit-field'>
+                    <input onKeyPress={(e) => onChangeTask(props.id, e)} onChange={onEditedChange}
+                           value={editedText} autoFocus={true} type="text" className="task__edit"/>
+                    <select value={secectedCategory} onChange={(e) => onChangeSelectedCategory(props.id, e)} className="task__edit-select">
+                        {categoriesArr.map((item: categoriesType) => <option key={item.id} value={item.name}>{item.name}</option>)}
+                    </select>
+                </div>
                 :
                 <span onDoubleClick={onEditMode} className={styles.task__text}>{props.taskText}</span>
             }
