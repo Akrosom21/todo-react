@@ -151,7 +151,8 @@ export const inputReducer = (state = initialState, action: actionsType): Initial
         case SHOW_ALL_CATEGORY:
             return {
                 ...state,
-                categorizedTasks: [...state.task]
+                categorizedTasks: [...state.task],
+                currentCategory: ''
             }
         case CHANGE_TASK_CATEGORY:
             return {
