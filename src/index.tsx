@@ -6,12 +6,16 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import {store} from './Store/store';
 import {BrowserRouter} from 'react-router-dom'
+import {Route} from "react-router-dom";
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
             <Provider store={store}>
-                <App/>
+                <Route
+                    path="/:category?"
+                    render={() => <App/>}
+                />
             </Provider>
         </BrowserRouter>
     </React.StrictMode>,

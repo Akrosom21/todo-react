@@ -3,8 +3,14 @@
     justify-content: flex-start;
     align-items: center;
     width: 500px;
-    height: 30px;
+    padding-bottom: 5px;
+    padding-top: 15px;
     border-bottom: 1px solid #282c34;
+    font-size: 16px;
+}
+
+.task__check {
+    margin-right: 10px;
 }
 
 .delete {

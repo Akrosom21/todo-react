@@ -6,6 +6,9 @@ import {Task} from "../Task/Task";
 import {taskType} from "../../Store/inputReducer";
 import styles from './TodoField.module.css'
 import {Sorting} from "../Sorting/Sorting";
+import { Layout} from 'antd';
+
+const { Content } = Layout;
 
 export const TodoField = (props) => {
     //setting tasks array according to requirements (all, completed, incompleted)
@@ -37,16 +40,22 @@ export const TodoField = (props) => {
     }
     const tasksCount = incompletedTasks.length
     return (
-        <div className={styles.todoField}>
-            <TodoInput/>
-            {showAllTasks && allTasks}
-            {showIncompletedTasks && incompletedTasks}
-            {showCompletedTasks && completedTasks}
-            <Sorting onAllTasks={onAllTasks} onIncompletedTasks={onIncompletedTasks}
-                     onCompletedTasks={onCompletedTasks} tasksCount={tasksCount}
-                     showAllTasks={showAllTasks} showIncompletedTasks={showIncompletedTasks}
-                     showCompletedTasks={showCompletedTasks}
-            />
-        </div>
+        <Layout>
+            <Content>
+                <div className="site-layout-background" style={{padding: 24, minHeight: '100vh'}}>
+                    <div className={styles.todoField}>
+                        <TodoInput/>
+                        {showAllTasks && allTasks}
+                        {showIncompletedTasks && incompletedTasks}
+                        {showCompletedTasks && completedTasks}
+                        <Sorting onAllTasks={onAllTasks} onIncompletedTasks={onIncompletedTasks}
+                                 onCompletedTasks={onCompletedTasks} tasksCount={tasksCount}
+                                 showAllTasks={showAllTasks} showIncompletedTasks={showIncompletedTasks}
+                                 showCompletedTasks={showCompletedTasks}
+                        />
+                    </div>
+                </div>
+            </Content>
+        </Layout>
     )
 }

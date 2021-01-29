@@ -5,18 +5,23 @@
 }
 
 .categories__item {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
-    width: 200px;
+    align-items: center;
+    width: 100%;
     margin-bottom: 20px;
+    font-size: 16px;
 }
 
 .categories__delete {
     cursor: pointer;
+    position: relative;
+    z-index: 1;
 }
 
 .categories__item_active {
     font-weight: bold;
+    color: white !important;
 }
 
 .categories__text {

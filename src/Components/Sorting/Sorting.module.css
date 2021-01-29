@@ -1,7 +1,19 @@
 .sorting {
     display: flex;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .sorting__btns_active {
     font-weight: bold;
+}
+
+.sorting__count {
+    font-size: 16px;
+}
+
+.sorting__btn {
+    margin-left: 15px;
 }
